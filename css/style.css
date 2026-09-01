@@ -48,8 +48,9 @@ svg {
   flex-direction: column;
   position: fixed;
   top: 0; left: 0; bottom: 0;
-  z-index: 100;
+  z-index: 200;
   overflow-y: auto;
+  transition: transform 0.25s ease;
 }
 
 .sidebar-header {
@@ -118,6 +119,49 @@ svg {
   border-top: 1px solid #1f2937;
 }
 
+/* ===== Overlay (mobile) ===== */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 150;
+}
+.sidebar-overlay.show { display: block; }
+
+/* ===== Mobile top bar ===== */
+.mobile-bar {
+  display: none;
+  height: 52px;
+  background: var(--sidebar-bg);
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  flex-shrink: 0;
+}
+.mobile-bar-logo {
+  font-weight: 800;
+  font-size: 15px;
+  color: #fff;
+  letter-spacing: -.02em;
+}
+.mobile-bar-logo span { color: var(--primary); }
+.hamburger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #d1d5db;
+  padding: 6px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  margin-left: auto;
+}
+.hamburger:hover { background: #1f2937; color: #fff; }
+.hamburger svg { width: 22px; height: 22px; }
+
 /* ===== Main ===== */
 .main {
   margin-left: var(--sidebar-w);
@@ -146,46 +190,6 @@ svg {
   font-weight: 600;
   padding: 2px 8px;
   border-radius: 20px;
-}
-
-/* ===== Stats Row ===== */
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-bottom: 32px;
-}
-
-.stat-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px 24px;
-  box-shadow: var(--shadow);
-}
-
-.stat-value {
-  font-size: 30px;
-  font-weight: 800;
-  color: var(--text);
-  line-height: 1;
-}
-
-.stat-label {
-  font-size: 12px;
-  color: var(--text-2);
-  margin-top: 6px;
-  text-transform: uppercase;
-  letter-spacing: .05em;
-  font-weight: 600;
-}
-
-/* ===== Section ===== */
-.section-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 14px;
 }
 
 /* ===== Tool Cards ===== */
@@ -248,6 +252,14 @@ svg {
   padding: 3px 8px;
   border-radius: 20px;
   flex-shrink: 0;
+}
+
+/* ===== Section ===== */
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 14px;
 }
 
 /* ===== Inner Tool Page ===== */
@@ -365,9 +377,33 @@ select:focus {
 
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
-  .sidebar { width: 100%; position: relative; height: auto; }
-  .main { margin-left: 0; padding: 20px 16px; }
   body { flex-direction: column; }
-  .stats-row { grid-template-columns: 1fr; }
+
+  /* Sidebar becomes a slide-in drawer */
+  .sidebar {
+    transform: translateX(-100%);
+    box-shadow: 4px 0 24px rgba(0,0,0,.3);
+  }
+  .sidebar.open { transform: translateX(0); }
+
+  /* Show mobile bar */
+  .mobile-bar { display: flex; }
+
+  /* Main takes full width */
+  .main {
+    margin-left: 0;
+    padding: 20px 16px 32px;
+    max-width: 100%;
+  }
+
+  .topbar { flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 20px; }
+  .page-title { font-size: 20px; }
+
+  .tools-grid { grid-template-columns: 1fr; }
+
   .form-row { grid-template-columns: 1fr; }
+
+  .tool-card-panel { padding: 20px 16px; max-width: 100%; }
+
+  .tool-page-title { font-size: 18px; }
 }
